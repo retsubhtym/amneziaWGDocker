@@ -1,0 +1,19 @@
+services:
+  amneziawg:
+    build:
+      context: .
+    image: amneziawg:local
+    container_name: amneziawg
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - "${AMNEZIAWG_PORT:-51820}:${AMNEZIAWG_PORT:-51820}/udp"
+    volumes:
+      - ./awg0.conf:/etc/amnezia/amneziawg/awg0.conf:ro
+    command: >
+      sh -c 'awg-quick up awg0 &&
+      trap "awg-quick down awg0" INT TERM EXIT &&
+      sleep infinity & wait'
+    restart: unless-stopped
