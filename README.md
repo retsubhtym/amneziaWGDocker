@@ -22,10 +22,18 @@ Run with Docker Compose:
 
 ```sh
 cp .env.example .env
+touch awg0.conf
+chmod 600 awg0.conf
 docker compose up -d --build
 ```
 
 Set `AMNEZIAWG_PORT` in `.env` to the same UDP port as `ListenPort` in `awg0.conf`.
+
+If Docker already created `awg0.conf` as a directory, remove it first:
+
+```sh
+rmdir awg0.conf
+```
 
 Run with an AmneziaWG config mounted as `/etc/amnezia/amneziawg/awg0.conf`:
 

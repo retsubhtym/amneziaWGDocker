@@ -11,9 +11,15 @@ services:
     ports:
       - "${AMNEZIAWG_PORT:-51820}:${AMNEZIAWG_PORT:-51820}/udp"
     volumes:
-      - ./awg0.conf:/etc/amnezia/amneziawg/awg0.conf:ro
+      - type: bind
+        source: ./awg0.conf
+        target: /etc/amnezia/amneziawg/awg0.conf
+        read_only: true
+        bind:
+          create_host_path: false
     command: >
-      sh -c 'awg-quick up awg0 &&
+      sh -c 'test -f /etc/amnezia/amneziawg/awg0.conf &&
+      awg-quick up awg0 &&
       trap "awg-quick down awg0" INT TERM EXIT &&
       sleep infinity & wait'
     restart: unless-stopped
