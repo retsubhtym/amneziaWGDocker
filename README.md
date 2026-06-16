@@ -44,7 +44,7 @@ docker run --rm -it \
   -p 51820:51820/udp \
   -v "$PWD/awg0.conf:/etc/amnezia/amneziawg/awg0.conf:ro" \
   amneziawg:local \
-  sh -c 'awg-quick up awg0 && trap "awg-quick down awg0" INT TERM EXIT && sleep infinity & wait'
+  sh -c 'set -e; awg-quick up awg0; trap "awg-quick down awg0" INT TERM EXIT; while true; do sleep 3600 & wait $!; done'
 ```
 
 The image uses the official userspace implementation, `amneziawg-go`, because Docker containers cannot portably install or manage a host Linux kernel module.
