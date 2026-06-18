@@ -152,10 +152,10 @@ S1 = 32
 S2 = 32
 S3 = 32
 S4 = 16
-H1 = 1:1073741823
-H2 = 1073741824:2147483647
-H3 = 2147483648:3221225471
-H4 = 3221225472:4294967295
+H1 = 1-1073741823
+H2 = 1073741824-2147483647
+H3 = 2147483648-3221225471
+H4 = 3221225472-4294967295
 PostUp = iptables -t nat -A POSTROUTING -s $vpn_cidr -o eth0 -j MASQUERADE
 PostDown = iptables -t nat -D POSTROUTING -s $vpn_cidr -o eth0 -j MASQUERADE
 
@@ -163,7 +163,6 @@ PostDown = iptables -t nat -D POSTROUTING -s $vpn_cidr -o eth0 -j MASQUERADE
 PublicKey = $client_public
 PresharedKey = $preshared_key
 AllowedIPs = ${client_ip%/*}/32
-AdvancedSecurity = on
 EOF
 
 cat > "$client_conf" <<EOF
@@ -178,10 +177,10 @@ S1 = 32
 S2 = 32
 S3 = 32
 S4 = 16
-H1 = 1:1073741823
-H2 = 1073741824:2147483647
-H3 = 2147483648:3221225471
-H4 = 3221225472:4294967295
+H1 = 1-1073741823
+H2 = 1073741824-2147483647
+H3 = 2147483648-3221225471
+H4 = 3221225472-4294967295
 
 [Peer]
 PublicKey = $server_public

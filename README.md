@@ -29,6 +29,8 @@ The generator creates `awg0.conf`, `client.conf`, and `.env`. Set `--port` if
 you want a UDP port other than `51820`.
 Do not commit `awg0.conf` or `client.conf`; they contain private keys and are ignored by Git.
 Import the generated `client.conf` into your AmneziaWG client.
+If you generated configs before this version, regenerate them with `--force` so
+the `H1`-`H4` ranges use the userspace-compatible `start-end` format.
 
 If Docker already created `awg0.conf` as a directory, remove it first:
 
