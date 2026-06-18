@@ -21,14 +21,14 @@ docker build -t amneziawg:local .
 Run with Docker Compose:
 
 ```sh
-cp .env.example .env
-cp /path/to/your/amneziawg/server.conf awg0.conf
-chmod 600 awg0.conf
+./generate-config.sh --endpoint <your-server-public-ip-or-hostname>
 docker compose up -d --build
 ```
 
-Set `AMNEZIAWG_PORT` in `.env` to the same UDP port as `ListenPort` in `awg0.conf`.
-Do not commit `awg0.conf`; it contains private keys and is ignored by Git.
+The generator creates `awg0.conf`, `client.conf`, and `.env`. Set `--port` if
+you want a UDP port other than `51820`.
+Do not commit `awg0.conf` or `client.conf`; they contain private keys and are ignored by Git.
+Import the generated `client.conf` into your AmneziaWG client.
 
 If Docker already created `awg0.conf` as a directory, remove it first:
 
