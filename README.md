@@ -8,8 +8,8 @@ This Dockerfile uses only official sources:
 
 Default versions:
 
-- `amneziawg-go`: `v0.2.18`
-- `amneziawg-tools`: `v1.0.20260223`
+- `amneziawg-go`: `v0.2.19`
+- `amneziawg-tools`: `v1.0.20260618-2`
 - Protocol support: AmneziaWG 2.0+
 
 Build:
@@ -22,12 +22,13 @@ Run with Docker Compose:
 
 ```sh
 cp .env.example .env
-touch awg0.conf
+cp /path/to/your/amneziawg/server.conf awg0.conf
 chmod 600 awg0.conf
 docker compose up -d --build
 ```
 
 Set `AMNEZIAWG_PORT` in `.env` to the same UDP port as `ListenPort` in `awg0.conf`.
+Do not commit `awg0.conf`; it contains private keys and is ignored by Git.
 
 If Docker already created `awg0.conf` as a directory, remove it first:
 

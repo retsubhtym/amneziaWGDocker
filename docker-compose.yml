@@ -4,8 +4,12 @@ services:
       context: .
     image: amneziawg:local
     container_name: amneziawg
+    cap_drop:
+      - ALL
     cap_add:
       - NET_ADMIN
+    security_opt:
+      - no-new-privileges:true
     devices:
       - /dev/net/tun:/dev/net/tun
     ports:
@@ -22,11 +26,19 @@ services:
       - -c
       - |
         set -e
-        test -f /etc/amnezia/amneziawg/awg0.conf
+        test -c /dev/net/tun || { echo "Missing /dev/net/tun. Start Docker with TUN support enabled."; exit 1; }
+        test -s /etc/amnezia/amneziawg/awg0.conf || { echo "Missing or empty ./awg0.conf. Mount a valid AmneziaWG config before starting."; exit 1; }
+        up=0
+        cleanup() {
+          if [ "$$up" = "1" ]; then
+            awg-quick down awg0 || true
+          fi
+        }
+        trap cleanup INT TERM EXIT
         awg-quick up awg0
-        trap 'awg-quick down awg0' INT TERM EXIT
+        up=1
         while true; do
           sleep 3600 &
-          wait $!
+          wait $$!
         done
     restart: unless-stopped

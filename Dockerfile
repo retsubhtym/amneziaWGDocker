@@ -1,11 +1,11 @@
 # syntax=docker/dockerfile:1
 
-ARG GO_VERSION=1.24.4
+ARG GO_VERSION=1.26.4
 ARG ALPINE_VERSION=3.19
 
 FROM golang:${GO_VERSION} AS amneziawg-go-builder
 
-ARG AMNEZIAWG_GO_REF=v0.2.18
+ARG AMNEZIAWG_GO_REF=v0.2.19
 
 WORKDIR /src/amneziawg-go
 
@@ -20,7 +20,8 @@ RUN git clone --depth 1 --branch "${AMNEZIAWG_GO_REF}" https://github.com/amnezi
 FROM alpine:${ALPINE_VERSION}
 
 ARG ALPINE_VERSION
-ARG AWGTOOLS_RELEASE=1.0.20260223
+ARG AWGTOOLS_RELEASE=1.0.20260618-2
+ARG AWGTOOLS_SHA256=b931875c44a932e5629bc05e85e25ecce0d3b66a8767730bf3014c1a05cbf167
 
 RUN apk --no-cache add \
         bash \
@@ -32,6 +33,7 @@ RUN apk --no-cache add \
         wget \
     && cd /usr/bin \
     && wget -O amneziawg-tools.zip "https://github.com/amnezia-vpn/amneziawg-tools/releases/download/v${AWGTOOLS_RELEASE}/alpine-${ALPINE_VERSION}-amneziawg-tools.zip" \
+    && echo "${AWGTOOLS_SHA256}  amneziawg-tools.zip" | sha256sum -c - \
     && unzip -j amneziawg-tools.zip \
     && rm amneziawg-tools.zip \
     && chmod +x /usr/bin/awg /usr/bin/awg-quick \
